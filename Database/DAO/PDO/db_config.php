@@ -15,11 +15,11 @@ class db_config{
 
   // __construct() calls and returns main() when the class is instantiated
   public function __construct($token = null){
-    return $this->main($token);
+    return $this->config_main($token);
   }
 
   // main() handles the credentials delivery
-  protected function main($token = null){
+  protected function config_main($token = null){
 
     // If a token is received, the function retrieves the respective credentials and returns it.
     if ($token){
@@ -28,17 +28,18 @@ class db_config{
 
     // If no token is received, the function retrieves the default database credentials and returns it.
     else {
-      return $this->default();
+      return $this->default_credentials();
     }
   }
 
   // Default database credentials function
-  private function default(){
+  private function default_credentials(){
 
     // Credentials array
     $credentials = array(
       'DB_NAME' => 'corp_database',
-      'HOST' => '192.168.1.1:1234',
+      'HOST' => '192.168.1.1',
+      'PORT' => '1234',
       'USERNAME' => 'corp_user',
       'PASSWORD' => 'evilcorp123'
     );
@@ -78,19 +79,22 @@ class db_config{
       // Indexed by the tokens
       'TOKEN_1' => array(
         'DB_NAME' => 'corp_database',
-        'HOST' => '192.168.1.1:1234',
+        'HOST' => '192.168.1.1',
+        'PORT' => '1234',
         'USERNAME' => 'corp_user',
         'PASSWORD' => 'evilcorp123'
       ),
       'TOKEN_2' => array(
         'DB_NAME' => 'corp_database_2',
-        'HOST' => '192.168.10.1:5678',
+        'HOST' => '192.168.10.1',
+        'PORT' => '5678',
         'USERNAME' => 'corp_user_2',
         'PASSWORD' => 'evilcorp123'
       ),
       'TOKEN_3' => array(
         'DB_NAME' => 'corp_database_3',
-        'HOST' => '192.168.0.1:4321',
+        'HOST' => '192.168.0.1',
+        'PORT' => '4321',
         'USERNAME' => 'corp_user_3',
         'PASSWORD' => 'evilcorp123'
       )

@@ -16,20 +16,45 @@ require_once ('db_config.php');
 // MySQL class that extends db_config for the database information
 class MySQL extends db_config{
 
-  // Database connection object
+  // Database connection object (PDO object)
   private $conn;
 
-  // Connection to the DB when instantiating the class
-  private function __construct($db_token = null){
+  // Calls and returns main() when the class is instantiated
+  public function __construct($db_token = null){
+    return $this->main($db_token);
+  }
+
+  // Creates the PDO connection and returns self or false when something goes wrong
+  private function main($db_token = null){
 
     /*
     $db_token stands for an encrypted identifier for the DB when the app uses more than one.
     When the token is not sent, the default DB is used (set in db_config.php or storage file(s)).
     */
 
-    $credentials = $this->main($db_token);
+    // Gets the credentials from db_config
+    $credentials = $this->config_main($db_token);
 
-    // TODO: Database connection
+    // MySQL dsn for PDO connection
+    $dsn = 'mysql: host=' . $credentials['HOST'] . ';port=' . $credentials['PORT'] . ';dbname=' . $credentials['DB_NAME'] . ';charset=utf8';
+    
+    // Database username and password
+    $username = $credentials['USERNAME'];
+    $password = $credentials['PASSWORD'];
+
+    // Tries connection sending to $this->conn
+    try {
+      $this->conn = new PDO($dsn, $username, $password);
+    } catch (PDOException $e){
+
+      // If something goes wrong, the connection is closed, an error message is shown and the function returns false
+      $this->conn = null;
+      echo 'An error ocurred when connecting to the database: ' . $e->getMessage() . '<br>';
+      return false;
+    }
+
+    // If the connection is successful, the function returns the MySQL object;
+    return self;
   }
 }
 ?>
